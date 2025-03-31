@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -o errexit  # Stop script if any command fails
 
-# 🟢 Update system package list and install required system dependencies
+# 🟢 Update system package list and install required dependencies
 apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
@@ -15,13 +15,15 @@ apt-get update && apt-get install -y \
     liblapack-dev \
     libatlas-base-dev \
     gfortran \
-    python3-setuptools
+    python3-setuptools \
+    python3-numpy \
+    python3-scipy
 
-# 🔵 Upgrade pip, setuptools, and wheel (important for building packages)
+# 🔵 Upgrade pip, setuptools, and wheel
 pip install --upgrade pip setuptools wheel
 
-# 🔴 Install numpy separately to ensure headers are available before pandas
-pip install --no-cache-dir numpy
+# 🔴 Force reinstall numpy to ensure headers exist
+pip install --no-cache-dir --force-reinstall numpy
 
-# 🟠 Install the rest of the dependencies
+# 🟠 Install other dependencies
 pip install --no-cache-dir -r requirements.txt
