@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-set -o errexit  # Stop script if any command fails
+set -o errexit  # Exit script on error
 
-# 🟢 Update system package list and install required dependencies
+# 🟢 Update package lists and install necessary system dependencies
 apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
@@ -17,13 +17,15 @@ apt-get update && apt-get install -y \
     gfortran \
     python3-setuptools \
     python3-numpy \
-    python3-scipy
+    python3-scipy \
+    python3-pandas  # Ensure pandas dependencies are installed
 
 # 🔵 Upgrade pip, setuptools, and wheel
 pip install --upgrade pip setuptools wheel
 
-# 🔴 Force reinstall numpy to ensure headers exist
-pip install --no-cache-dir --force-reinstall numpy
+# 🔴 Force reinstall numpy **before installing anything else**
+pip uninstall -y numpy
+pip install --no-cache-dir numpy
 
-# 🟠 Install other dependencies
+# 🟠 Now install the rest of the dependencies
 pip install --no-cache-dir -r requirements.txt
